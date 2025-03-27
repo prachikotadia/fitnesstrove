@@ -1,10 +1,10 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTheme } from "@/contexts/ThemeContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Chart } from "@/components/ui/chart";
+import { ChartContainer } from "@/components/ui/chart";
 import { Button } from "@/components/ui/button";
 import { Activity, Calendar, FileText, Plus, Download } from "lucide-react";
+import * as RechartsPrimitive from "recharts";
 
 const HealthHistory = () => {
   const { theme } = useTheme();
@@ -129,33 +129,21 @@ const HealthHistory = () => {
               </CardHeader>
               <CardContent>
                 <div className="h-80">
-                  <Chart
-                    type="line"
-                    data={weightData}
-                    options={{
-                      responsive: true,
-                      maintainAspectRatio: false,
-                      scales: {
-                        y: {
-                          beginAtZero: false,
-                          grid: {
-                            color: theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
-                          },
-                          ticks: {
-                            color: theme === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)',
-                          }
-                        },
-                        x: {
-                          grid: {
-                            color: theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
-                          },
-                          ticks: {
-                            color: theme === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)',
-                          }
-                        }
-                      },
-                    }}
-                  />
+                  <ChartContainer config={{}}>
+                    <RechartsPrimitive.LineChart data={weightData.datasets[0].data.map((value, index) => ({ name: weightData.labels[index], value }))}>
+                      <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" />
+                      <RechartsPrimitive.XAxis dataKey="name" />
+                      <RechartsPrimitive.YAxis />
+                      <RechartsPrimitive.Tooltip />
+                      <RechartsPrimitive.Line 
+                        type="monotone" 
+                        dataKey="value" 
+                        stroke={theme === 'dark' ? "#7DD3FC" : "#0EA5E9"} 
+                        strokeWidth={2} 
+                        dot={{ r: 4 }} 
+                      />
+                    </RechartsPrimitive.LineChart>
+                  </ChartContainer>
                 </div>
               </CardContent>
             </Card>
@@ -167,33 +155,35 @@ const HealthHistory = () => {
               </CardHeader>
               <CardContent>
                 <div className="h-80">
-                  <Chart
-                    type="line"
-                    data={bloodPressureData}
-                    options={{
-                      responsive: true,
-                      maintainAspectRatio: false,
-                      scales: {
-                        y: {
-                          beginAtZero: false,
-                          grid: {
-                            color: theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
-                          },
-                          ticks: {
-                            color: theme === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)',
-                          }
-                        },
-                        x: {
-                          grid: {
-                            color: theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
-                          },
-                          ticks: {
-                            color: theme === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)',
-                          }
-                        }
-                      },
-                    }}
-                  />
+                  <ChartContainer config={{}}>
+                    <RechartsPrimitive.LineChart 
+                      data={bloodPressureData.labels.map((label, index) => ({
+                        name: label,
+                        systolic: bloodPressureData.datasets[0].data[index],
+                        diastolic: bloodPressureData.datasets[1].data[index]
+                      }))}
+                    >
+                      <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" />
+                      <RechartsPrimitive.XAxis dataKey="name" />
+                      <RechartsPrimitive.YAxis />
+                      <RechartsPrimitive.Tooltip />
+                      <RechartsPrimitive.Legend />
+                      <RechartsPrimitive.Line 
+                        type="monotone" 
+                        dataKey="systolic" 
+                        stroke={theme === 'dark' ? "#F87171" : "#EF4444"} 
+                        strokeWidth={2} 
+                        dot={{ r: 4 }} 
+                      />
+                      <RechartsPrimitive.Line 
+                        type="monotone" 
+                        dataKey="diastolic" 
+                        stroke={theme === 'dark' ? "#60A5FA" : "#3B82F6"} 
+                        strokeWidth={2} 
+                        dot={{ r: 4 }} 
+                      />
+                    </RechartsPrimitive.LineChart>
+                  </ChartContainer>
                 </div>
               </CardContent>
             </Card>
