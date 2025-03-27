@@ -101,6 +101,6 @@
   }
   
   .health-card {
-    @apply bg-white rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition-shadow duration-300;
+    @apply bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300;
   }
 }
